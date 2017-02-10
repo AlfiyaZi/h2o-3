@@ -1398,12 +1398,11 @@ def assert_H2OTwoDimTable_equal(table1, table2, col_header_list, tolerance=1e-6,
                         val2 = table2.cell_values[name_ind2][indC]*flip_sign_vec[indC]
 
                         if (type(val1) == float) and (type(val2) == float):
-                            compare_val = abs(val1-val2)
-                            compare_val_ratio = compare_val/max(abs(val1), abs(val2))
-                            if min(compare_val, compare_val_ratio) > tolerance:
+                            compare_val_ratio = abs(val1-val2)/max(1, abs(val1), abs(val2))
+                            if compare_val_ratio > tolerance:
                                 assert False, "Table entries are not equal within tolerance."
 
-                            worst_error = max(worst_error, compare_val, compare_val_ratio)
+                            worst_error = max(worst_error, compare_val_ratio)
                         else:
                             assert False, "Tables contains non-numerical values.  Comparison is for numericals only!"
                     next_name=True

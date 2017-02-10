@@ -29,7 +29,7 @@ import water.util.TwoDimTable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import static hex.util.DimensionReductionUtils.createScoringHistoryTableDR;
 import static hex.util.DimensionReductionUtils.generateIPC;
@@ -339,7 +339,7 @@ public class PCA extends ModelBuilder<PCAModel,PCAModel.PCAParameters,PCAModel.P
           model._output._training_time_ms.add(System.currentTimeMillis());
 
           // generate variables for scoring_history generation
-          HashMap<String, ArrayList> scoreTable = new HashMap<String, ArrayList>();
+          LinkedHashMap<String, ArrayList> scoreTable = new LinkedHashMap<String, ArrayList>();
           scoreTable.put("Timestamp", model._output._training_time_ms);
           model._output._scoring_history = createScoringHistoryTableDR(scoreTable, "Scoring History for GramSVD",
                   _job.start_time());

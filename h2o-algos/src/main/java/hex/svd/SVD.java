@@ -27,7 +27,7 @@ import water.util.TwoDimTable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static hex.util.DimensionReductionUtils.createScoringHistoryTableDR;
@@ -484,7 +484,7 @@ public class SVD extends ModelBuilder<SVDModel,SVDModel.SVDParameters,SVDModel.S
             DivideU utsk = new DivideU(model._output._d);
             utsk.doAll(u);
           }
-          HashMap<String, ArrayList> scoreTable = new HashMap<String, ArrayList>();
+          LinkedHashMap<String, ArrayList> scoreTable = new LinkedHashMap<String, ArrayList>();
           scoreTable.put("Timestamp", model._output._training_time_ms);
           scoreTable.put("err", model._output._history_err);
           scoreTable.put("Principal Component #", model._output._history_eigenVectorIndex);
@@ -495,7 +495,7 @@ public class SVD extends ModelBuilder<SVDModel,SVDModel.SVDParameters,SVDModel.S
           u = directSVD(dinfo, qfrm, model, u_name);
           model._output._training_time_ms.add(System.currentTimeMillis());
           model._output._history_average_SEE.add(model._output._history_average_SEE.get(model._output._history_average_SEE.size()-1)); // add last err back to it
-          HashMap<String, ArrayList> scoreTable = new HashMap<String, ArrayList>();
+          LinkedHashMap<String, ArrayList> scoreTable = new LinkedHashMap<String, ArrayList>();
           scoreTable.put("Timestamp", model._output._training_time_ms);
           scoreTable.put("average SEE", model._output._history_average_SEE);
           model._output._scoring_history = createScoringHistoryTableDR(scoreTable,

@@ -56,17 +56,11 @@ class H2OPCA(H2OEstimator):
         super(H2OPCA, self).__init__()
         self._parms = locals()
         self._parms = {k: v for k, v in self._parms.items() if k != "self"}
-        try:
-            assert_is_type(pca_method, Enum("GramSVD", "Power", "GLRM", "Randomized"))
-            self._parms["pca_method"]=pca_method
-        except:
-            self._parms="GramSVD"
 
-        try:
-            assert_is_type(transform, Enum("NONE", "DEMEAN", "DESCALE", "STANDARDIZE", "NORMALIZE"))
-            self._parms["transform"]=transform
-        except:
-            self._parms["transform"]="NONE"
+        assert_is_type(pca_method, Enum("GramSVD", "Power", "GLRM", "Randomized"))
+        self._parms["pca_method"]=pca_method
+        assert_is_type(transform, Enum("NONE", "DEMEAN", "DESCALE", "STANDARDIZE", "NORMALIZE"))
+        self._parms["transform"]=transform
 
     def fit(self, X, y=None, **params):
         return super(H2OPCA, self).fit(X)
@@ -123,17 +117,11 @@ class H2OSVD(H2OEstimator):
         super(H2OSVD, self).__init__()
         self._parms = locals()
         self._parms = {k: v for k, v in self._parms.items() if k != "self"}
-        try:
-            assert_is_type(svd_method, Enum("GramSVD", "Power", "GLRM", "Randomized"))
-            self._parms["svd_method"] = svd_method
-        except:
-            self._parms["svd_method"] = "GramSVD"
-        try:
-            assert_is_type(transform, Enum("NONE", "DEMEAN", "DESCALE", "STANDARDIZE", "NORMALIZE"))
-            self._parms["transform"]=transform
-        except:
-            self._parms["transform"]="NONE"
 
+        assert_is_type(svd_method, Enum("GramSVD", "Power", "GLRM", "Randomized"))
+        self._parms["svd_method"] = svd_method
+        assert_is_type(transform, Enum("NONE", "DEMEAN", "DESCALE", "STANDARDIZE", "NORMALIZE"))
+        self._parms["transform"]=transform
         self._parms['_rest_version'] = 99
 
 

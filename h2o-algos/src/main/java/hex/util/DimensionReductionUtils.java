@@ -6,7 +6,7 @@ import water.util.PrettyPrint;
 import water.util.TwoDimTable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 
@@ -49,24 +49,20 @@ public class DimensionReductionUtils {
      * @param startTime:  time your model building job was first started.
      * @return: TwoDimTable containing the scoring history.
      */
-    public static TwoDimTable createScoringHistoryTableDR(HashMap<String, ArrayList> scoreTable, String tableName,
+    public static TwoDimTable createScoringHistoryTableDR(LinkedHashMap<String, ArrayList> scoreTable, String tableName,
                                                           long startTime) {
         List<String> colHeaders = new ArrayList<>();
         List<String> colTypes = new ArrayList<>();
         List<String> colFormat = new ArrayList<>();
         ArrayList<String> otherTableEntries = new ArrayList<String>();
 
-        if (scoreTable.keySet().contains("Timestamp")) {
-            colHeaders.add("Timestamp"); colTypes.add("string"); colFormat.add("%s");
-            colHeaders.add("Duration"); colTypes.add("string"); colFormat.add("%s");
-            colHeaders.add("Iteration"); colTypes.add("long"); colFormat.add("%d");
-        }
-
         for (String fieldName:scoreTable.keySet()) {
-            switch(fieldName) {
-                case "Timestamp": break;  // No-op
-                default:
-                    otherTableEntries.add(fieldName); colHeaders.add(fieldName); colTypes.add("double"); colFormat.add("%.5f");
+            if (fieldName.equals("Timestamp")) {
+                colHeaders.add("Timestamp"); colTypes.add("string"); colFormat.add("%s");
+                colHeaders.add("Duration"); colTypes.add("string"); colFormat.add("%s");
+                colHeaders.add("Iteration"); colTypes.add("long"); colFormat.add("%d");
+            } else {
+                otherTableEntries.add(fieldName); colHeaders.add(fieldName); colTypes.add("double"); colFormat.add("%.5f");
             }
         }
 
@@ -80,11 +76,10 @@ public class DimensionReductionUtils {
                 colFormat.toArray(new String[0]),
                 "");
 
+        assert (rows <= table.getRowDim());
+
         for (int row = 0; row < rows; row++) {
             int col = 0;
-            assert (row < table.getRowDim());
-            assert (col < table.getColDim());
-
             // take care of Timestamp, Duration, Iteration.
             DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             table.set(row, col++, fmt.print((long) scoreTable.get("Timestamp").get(row)));
